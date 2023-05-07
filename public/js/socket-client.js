@@ -1,8 +1,13 @@
-const lblOnline = document.querySelector('#lblOnline');
+const lblOnline  = document.querySelector('#lblOnline');
 const lblOffline = document.querySelector('#lblOffline');
+const txtMessage = document.querySelector('#txtMessage');
+const btnSend    = document.querySelector('#btnSend');
 
 // Este es el socket del cliente que esta usando la app
 // El io() es el que importamos en el html
+// socket mantiene el estado de la conexion con el servidor
+// .on - escuchar
+// .emit - emitir evento
 const socket = io();
 
 // Listeners
@@ -17,3 +22,14 @@ socket.on('disconnect', () => {
     lblOnline.style.display = 'none'
     lblOffline.style.display = '';
 });
+
+btnSend.addEventListener('click', () => {
+    const message = txtMessage.value;
+    const payload = {
+        message,
+        id: '123ABC',
+        date: new Date().getTime()
+    };
+    // emitir mensaje al servidor, el server tiene que escucharlo
+    socket.emit('send-message', payload );
+})
