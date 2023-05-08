@@ -1,8 +1,10 @@
 const TicketControl = require('../models/ticket-control');
+// Esta instancia es unica cada vez que se reinicialice el backend**
 const ticketControl = new TicketControl();
 
 const socketController = (socket) => {
 
+    // ** Estos no se ejecutan debido a que son observables, van a estar pendientes en esta parte del servver
     socket.on('disconnect', () => {
         console.log('Cliente desconectado', socket.id);
     });
