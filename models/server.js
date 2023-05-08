@@ -46,10 +46,12 @@ class Server {
             socket.on('disconnect', () => {
                 console.log('Cliente desconectado', socket.id);
             });
+
             // EL payload es lo que recibimos del cliente
             socket.on('send-message', ( payload ) => {
-                console.log(payload);
-            })
+                // Emitir mensaje a los clientes, aqui lo mandamos, en el cliente debemos de escucharlo
+                this.io.emit('send-message', payload);
+            });
         });
     }
 
