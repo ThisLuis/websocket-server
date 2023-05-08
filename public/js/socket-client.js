@@ -1,41 +1,47 @@
+
+// Referencias del HTML
 const lblOnline  = document.querySelector('#lblOnline');
 const lblOffline = document.querySelector('#lblOffline');
-const txtMessage = document.querySelector('#txtMessage');
-const btnSend    = document.querySelector('#btnSend');
+const txtMensaje = document.querySelector('#txtMensaje');
+const btnEnviar  = document.querySelector('#btnEnviar');
 
-// Este es el socket del cliente que esta usando la app
-// El io() es el que importamos en el html
-// socket mantiene el estado de la conexion con el servidor
-// .on - escuchar
-// .emit - emitir evento
+
 const socket = io();
 
-// Listeners
+
+
 socket.on('connect', () => {
-    console.log('Conectado');
-    lblOnline.style.display = ''
+    // console.log('Conectado');
+
     lblOffline.style.display = 'none';
+    lblOnline.style.display  = '';
+
 });
 
 socket.on('disconnect', () => {
-    console.log('Desconectado del servidor');
-    lblOnline.style.display = 'none'
+    // console.log('Desconectado del servidor');
+
+    lblOnline.style.display  = 'none';
     lblOffline.style.display = '';
 });
 
-socket.on('send-message', payload => {
-    console.log(payload);
-});
 
-btnSend.addEventListener('click', () => {
-    const message = txtMessage.value;
+socket.on('enviar-mensaje', (payload) => {
+    console.log( payload )
+})
+
+
+btnEnviar.addEventListener( 'click', () => {
+
+    const mensaje = txtMensaje.value;
     const payload = {
-        message,
+        mensaje,
         id: '123ABC',
-        date: new Date().getTime()
-    };
-    // emitir mensaje al servidor, el server tiene que escucharlo
-    socket.emit('send-message', payload, ( id ) => {
+        fecha: new Date().getTime()
+    }
+    
+    socket.emit( 'enviar-mensaje', payload, ( id ) => {
         console.log('Desde el server', id );
     });
+
 });
