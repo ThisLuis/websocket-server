@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
+const { socketController } = require('../sockets/controller');
+
 class Server {
 
     constructor() {
@@ -40,23 +42,9 @@ class Server {
     }
 
     sockets() {
-        this.io.on('connection', socket => {
-            console.log('Cliente conectado', socket.id);
-
-            socket.on('disconnect', () => {
-                console.log('Cliente desconectado', socket.id);
-            });
-
-            // EL payload es lo que recibimos del cliente
-            socket.on('send-message', ( payload, callback ) => {
-                const id = 123123;
-                callback( { id, date: new Date().getTime() } );
-                // Emitir mensaje a los clientes, aqui lo mandamos, en el cliente debemos de escucharlo
-                // this.io.emit('send-message', payload );
-            });
-        });
+        this.io.on('connection', socketController );
     }
-
+    
     listen() {
         this.server.listen( this.port, () => {
             console.log('Servidor corriendo en puerto', this.port );
