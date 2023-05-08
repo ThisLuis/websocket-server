@@ -48,9 +48,11 @@ class Server {
             });
 
             // EL payload es lo que recibimos del cliente
-            socket.on('send-message', ( payload ) => {
+            socket.on('send-message', ( payload, callback ) => {
+                const id = 123123;
+                callback( { id, date: new Date().getTime() } );
                 // Emitir mensaje a los clientes, aqui lo mandamos, en el cliente debemos de escucharlo
-                this.io.emit('send-message', payload);
+                // this.io.emit('send-message', payload );
             });
         });
     }
