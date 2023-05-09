@@ -5,14 +5,17 @@ const ticketControl = new TicketControl();
 const socketController = (socket) => {
 
     // Emitir mensaje a quien se conecte por primera vez
+    // Estos se disparan cuando un cliente se conecta
     socket.emit('last-ticket', ticketControl.last);
     socket.emit('estado-actual', ticketControl.lastFour);
+    socket.emit('tickets-pendientes', ticketControl.tickets.length );
     
     
     // 
     socket.on('next-ticket', ( payload, callback ) => {
         const next = ticketControl.next();
         callback( next );
+        socket.broadcast.emit('tickets-pendientes', ticketControl.tickets.length)
 
         // TODO: Notificar que hay un nuevo ticket pendiente de asignar
     });
@@ -40,7 +43,11 @@ const socketController = (socket) => {
         const ticket = ticketControl.attendTicket( escritorio );
 
         // TODO: Notificar cambio en los ultimos 4
+        
         socket.broadcast.emit('estado-actual', ticketControl.lastFour);
+        socket.emit('tickets-pendientes', ticketControl.tickets.length );
+        socket.broadcast.emit('tickets-pendientes', ticketControl.tickets.length );
+
 
 
         if( !ticket ) {
