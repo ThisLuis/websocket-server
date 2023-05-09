@@ -51,7 +51,7 @@ class TicketControl {
          // El desk lo mandamos como null porque aun no esta siendo atendido
          const ticket = new Ticket(this.last, null);
          // this.tickets,push( new Ticket(this.last, null) );
-         this.tickets,push( ticket );
+         this.tickets.push( ticket );
 
          this.saveDB();
          return 'Ticket ' + ticket.number;
