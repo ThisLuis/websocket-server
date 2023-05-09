@@ -2,9 +2,9 @@ const path = require('path');
 const fs   = require('fs');
 
 class Ticket {
-    constructor( number, desk ) {
+    constructor( number, escritorio ) {
         this.number = number;
-        this.desk   = desk;
+        this.escritorio   = escritorio;
     }
 }
 
@@ -48,7 +48,7 @@ class TicketControl {
 
     next() {
          this.last += 1;
-         // El desk lo mandamos como null porque aun no esta siendo atendido
+         // El escritorio lo mandamos como null porque aun no esta siendo atendido
          const ticket = new Ticket(this.last, null);
          // this.tickets,push( new Ticket(this.last, null) );
          this.tickets.push( ticket );
@@ -59,8 +59,8 @@ class TicketControl {
 
     // Atendera un ticket respectivo
     // Este metodo puede retornar 2 cosas, la primera es un null en caso de que los tickets esten vacios
-    // O puede retornar el ticket que este desk tiene que atender
-    attendTicket( desk ) {
+    // O puede retornar el ticket que este escritorio tiene que atender
+    attendTicket( escritorio ) {
         // No tenemos tickets
         if( this.tickets.length === 0 ) {
             return null;
@@ -69,13 +69,13 @@ class TicketControl {
         // Obtenemos el primer ticket que nos retorna shift, el cual es eliminado del arreglo, el primero
         // Ahora ticket es una instancia de una nueva constante, ya no esta en el arreglo de tickets
         const ticket = this.tickets.shift(); // this.tickets[0];
-        ticket.desk = desk;
+        ticket.escritorio = escritorio;
 
         // Añadimos al principio el ticket al arreglo de ultimos4
         this.lastFour.unshift( ticket );
 
         // Verificamos que lastFour sean solo 4, de lo contrario borramos el ultimo
-        if( this.lastFour.length > 0 ) {
+        if( this.lastFour.length > 4  ) {
             this.lastFour.splice(-1, 1);
         }
 

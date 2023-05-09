@@ -6,6 +6,7 @@ const socketController = (socket) => {
 
     // Emitir mensaje a quien se conecte por primera vez
     socket.emit('last-ticket', ticketControl.last);
+    socket.emit('estado-actual', ticketControl.lastFour);
     
     
     // 
@@ -39,6 +40,8 @@ const socketController = (socket) => {
         const ticket = ticketControl.attendTicket( escritorio );
 
         // TODO: Notificar cambio en los ultimos 4
+        socket.broadcast.emit('estado-actual', ticketControl.lastFour);
+
 
         if( !ticket ) {
             callback({
