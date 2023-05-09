@@ -27,6 +27,32 @@ const socketController = (socket) => {
     //     // Emitir mensaje a los clientes, aqui lo mandamos, en el cliente debemos de escucharlo
     //     socket.broadcast.emit('send-message', payload );
     // });
+
+    socket.on('atender-ticket', ( { escritorio }, callback ) => {
+        if( !escritorio ) {
+            return callback({
+                ok: false,
+                msg: 'El escritorio es obligatorio'
+            });
+        }
+
+        const ticket = ticketControl.attendTicket( escritorio );
+
+        // TODO: Notificar cambio en los ultimos 4
+
+        if( !ticket ) {
+            callback({
+                ok: false,
+                msg: 'Ya no hay tickets pendientes'
+            });
+        } else {
+            callback({
+                ok: true,
+                ticket
+            })
+        }
+    });
+
 };
 
 module.exports = {
